@@ -1,1 +1,8 @@
-db.sqlite3
+# Python
+*.pyc
+*.pyo
+
+# Databases
+*.db
+*.sqlite3
+dump.rdb
