@@ -1,10 +1,8 @@
 
-import json
 from books.serializers import Book, ReadingUpdateSerializer
 
 
-def import_legacy(json_filename):
-    js = json.load(open(json_filename, 'r'))
+def import_legacy(js):
     for record in js:
         if record['model'] == "books.book":
             Book.objects.create(
