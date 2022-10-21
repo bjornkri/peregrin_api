@@ -6,3 +6,6 @@
 *.db
 *.sqlite3
 dump.rdb
+
+# Tests
+.coverage
