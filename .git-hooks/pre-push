@@ -1,0 +1,20 @@
+#!/bin/sh
+
+pdb_check=$(git grep -E -n '[ ;](i?pdb|breakpoint\()')
+if [ ${#pdb_check} -gt 0 ]
+then
+        echo "==> 🚨🚨🚨 COMMIT REJECTED: Breakpoints detected 🚨🚨🚨"
+        echo $pdb_check
+        exit 1
+else
+        echo "==> ✨Code is clean of breakpoints✨"
+fi
+
+# Magical git things!
+. git-sh-setup
+
+require_clean_work_tree push "==> 🚨🚨🚨 Commit or stash your stuff and try again 🚨🚨🚨"
+echo "==> ✨Working tree is clean✨"
+
+# Run tests and fail early.
+./scripts/test -x

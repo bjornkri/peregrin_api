@@ -3,7 +3,6 @@ from rest_framework import viewsets
 from books.models import Book, ReadingUpdate
 from books.serializers import BookSerializer, ReadingUpdateSerializer
 
-# Create your views here.
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -e
+
+interactive=true
+while [ $# -gt 0 ]; do
+  	case "$1" in
+    	--no-input)
+    	  	interactive=false
+      	;;
+  	esac
+	shift
+done
+
+cd "$(dirname "$0")/.."
+
+echo "==> Migrating DB"
+pipenv run python ./peregrin/manage.py migrate
+
+echo "==> Setting up git hooks"
+git config core.hooksPath .git-hooks
+
+echo "==> App is now ready to go!"

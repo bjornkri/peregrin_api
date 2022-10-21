@@ -10,6 +10,7 @@ pytest = "*"
 factory-boy = "*"
 pytest-django = "*"
 pytest-coverage = "*"
+pytest-flake8 = "*"
 
 [dev-packages]
 
