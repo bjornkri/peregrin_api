@@ -14,11 +14,12 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class ReadingUpdateSerializer(serializers.ModelSerializer):
-    current_page = serializers.IntegerField(required=False)
+    current_page = serializers.IntegerField()
 
     class Meta:
         model = ReadingUpdate
         fields = ['id', 'book', 'date', 'progress', 'current_page']
+        read_only_fields = ['progress']
 
     def create(self, validated_data):
         current_page = validated_data.pop('current_page')
@@ -33,18 +34,3 @@ class ReadingUpdateSerializer(serializers.ModelSerializer):
         if current_page:
             instance.progress_from_page(current_page)
         return instance
-
-    def validate(self, data):
-        progress = data.get('progress', None)
-        current_page = data.get('current_page', None)
-        if progress is not None and current_page is not None:
-            raise serializers.ValidationError(
-                "only progress or current_page expected, but not both"
-            )
-        if self.context['request'].method == 'POST' and (
-            progress is None and current_page is None
-        ):
-            raise serializers.ValidationError(
-                "either progress or current_page required"
-            )
-        return super().validate(data)
