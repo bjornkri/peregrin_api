@@ -10,8 +10,8 @@ factory = APIRequestFactory()
 
 @pytest.mark.django_db
 def test_book_list():
-    BookFactory(title='First book', last_page='500')
-    BookFactory(title='Second book', last_page='500')
+    BookFactory(title='First book')
+    BookFactory(title='Second book')
     request = factory.get(reverse('book-list'))
     view = BookViewSet.as_view({'get': 'list'})
     response = view(request)
@@ -20,7 +20,7 @@ def test_book_list():
 
 @pytest.mark.django_db
 def test_reading_update_create_with_current_page():
-    book = BookFactory(title='First book', last_page='500')
+    book = BookFactory(title='First book')
     request = factory.post(reverse('readingupdate-list'), {
         "book": book.pk, "current_page": 20, "date": date(2022, 1, 1)
     })
@@ -31,7 +31,7 @@ def test_reading_update_create_with_current_page():
 
 @pytest.mark.django_db
 def test_reading_update_update_with_current_page():
-    book = BookFactory(title='First book', last_page='500')
+    book = BookFactory(title='First book')
     update = ReadingUpdateFactory(
         book=book, progress=100,
         date=date(2022, 1, 1)

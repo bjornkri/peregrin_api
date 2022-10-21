@@ -16,7 +16,7 @@ class Book(models.Model):
             models.Sum('progress')
         )
         progress_sum = updates['progress__sum'] or 0
-        return self.first_page + progress_sum
+        return self.start_location + progress_sum
 
 
 class ReadingUpdate(models.Model):
@@ -38,7 +38,7 @@ class ReadingUpdate(models.Model):
             models.Sum('progress')
         )
         progress_sum = updates['progress__sum'] or 0
-        return self.book.first_page + progress_sum
+        return self.book.start_location + progress_sum
 
     def progress_from_page(self, current_page):
         prev_prog = self.progress
@@ -46,7 +46,7 @@ class ReadingUpdate(models.Model):
             prev_update = self.get_previous_by_date(book=self.book)
             progress = current_page - prev_update.current_page
         except ReadingUpdate.DoesNotExist:
-            progress = current_page - self.book.first_page
+            progress = current_page - self.book.start_location
         self.progress = progress
         self.save()
         for update in self.book.readingupdate_set.filter(date__gt=self.date):
