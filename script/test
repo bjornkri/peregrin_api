@@ -5,4 +5,4 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-pipenv run pytest --cov=. --cov-report=html "$@"
+pipenv run pytest --cov=./peregrin --cov-report=html "$@"
