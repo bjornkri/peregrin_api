@@ -4,8 +4,8 @@ from django.db import models
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
-    first_page = models.IntegerField(default=1)
-    last_page = models.IntegerField()
+    start_location = models.IntegerField(default=1)
+    end_location = models.IntegerField()
 
     def __str__(self):
         return self.title
