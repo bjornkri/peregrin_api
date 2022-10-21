@@ -7,6 +7,7 @@ class Book(models.Model):
     start_location = models.IntegerField(default=1)
     end_location = models.IntegerField()
     start_date = models.DateField(default=date.today)
+    finished = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
