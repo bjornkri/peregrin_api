@@ -6,6 +6,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     start_location = models.IntegerField(default=1)
     end_location = models.IntegerField()
+    start_date = models.DateField(default=date.today)
 
     def __str__(self):
         return self.title
