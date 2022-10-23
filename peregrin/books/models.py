@@ -13,7 +13,7 @@ class Book(models.Model):
         return self.title
 
     @property
-    def current_page(self):
+    def current_location(self):
         updates = self.readingupdate_set.all().aggregate(
             models.Sum('progress')
         )
@@ -33,7 +33,7 @@ class ReadingUpdate(models.Model):
         unique_together = ['book', 'date']
 
     @property
-    def current_page(self):
+    def current_location(self):
         updates = self.book.readingupdate_set.filter(
             date__lte=self.date
         ).aggregate(
@@ -42,13 +42,13 @@ class ReadingUpdate(models.Model):
         progress_sum = updates['progress__sum'] or 0
         return self.book.start_location + progress_sum
 
-    def progress_from_page(self, current_page):
+    def progress_from_page(self, current_location):
         prev_prog = self.progress
         try:
             prev_update = self.get_previous_by_date(book=self.book)
-            progress = current_page - prev_update.current_page
+            progress = current_location - prev_update.current_location
         except ReadingUpdate.DoesNotExist:
-            progress = current_page - self.book.start_location
+            progress = current_location - self.book.start_location
         self.progress = progress
         self.save()
         for update in self.book.readingupdate_set.filter(date__gt=self.date):

@@ -24,21 +24,21 @@ def test_reading_update_string():
 
 
 @pytest.mark.django_db
-def test_current_page_for_new_book():
+def test_current_location_for_new_book():
     book = BookFactory()
-    assert book.current_page == 1
+    assert book.current_location == 1
 
 
 @pytest.mark.django_db
-def test_current_page_for_book_with_updates():
+def test_current_location_for_book_with_updates():
     book = BookFactory(start_date=date(2022, 1, 1))
     ReadingUpdateFactory(book=book, progress=19, date=date(2022, 1, 1))
     ReadingUpdateFactory(book=book, progress=30, date=date(2022, 1, 2))
-    assert book.current_page == 50
+    assert book.current_location == 50
 
 
 @pytest.mark.django_db
-def test_current_page_for_reading_update():
+def test_current_location_for_reading_update():
     book = BookFactory(start_date=date(2022, 1, 1))
     update_1 = ReadingUpdateFactory(
         book=book, progress=19, date=date(2022, 1, 1)
@@ -46,8 +46,8 @@ def test_current_page_for_reading_update():
     update_2 = ReadingUpdateFactory(
         book=book, progress=30, date=date(2022, 1, 2)
     )
-    assert update_1.current_page == 20
-    assert update_2.current_page == 50
+    assert update_1.current_location == 20
+    assert update_2.current_location == 50
 
 
 @pytest.mark.django_db

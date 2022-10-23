@@ -19,13 +19,13 @@ def test_book_list():
 
 
 @pytest.mark.django_db
-def test_reading_update_create_with_current_page():
+def test_reading_update_create_with_current_location():
     book = BookFactory(
         title='First book',
         start_date=date(2022, 1, 1)
     )
     request = factory.post(reverse('readingupdate-list'), {
-        "book": book.pk, "current_page": 20, "date": date(2022, 1, 1)
+        "book": book.pk, "current_location": 20, "date": date(2022, 1, 1)
     })
     view = ReadingUpdateViewSet.as_view({'post': 'create'})
     response = view(request)
@@ -33,7 +33,7 @@ def test_reading_update_create_with_current_page():
 
 
 @pytest.mark.django_db
-def test_reading_update_update_with_current_page():
+def test_reading_update_update_with_current_location():
     book = BookFactory(
         title='First book',
         start_date=date(2022, 1, 1)
@@ -44,7 +44,7 @@ def test_reading_update_update_with_current_page():
     )
     request = factory.put(
         reverse('readingupdate-detail', kwargs={'pk': update.id}), {
-            "current_page": 20,
+            "current_location": 20,
             "book": book.pk,
         }
     )

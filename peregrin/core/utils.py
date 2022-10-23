@@ -16,7 +16,7 @@ def import_legacy(js):
         elif record['model'] == 'history.locationupdate':
             update = ReadingUpdateSerializer(data={
                     "book": record['fields']['book'],
-                    "current_page": record['fields']['location'],
+                    "current_location": record['fields']['location'],
                     "date": record['fields']['date']
                 }
             )

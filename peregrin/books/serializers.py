@@ -3,34 +3,34 @@ from books.models import Book, ReadingUpdate
 
 
 class BookSerializer(serializers.ModelSerializer):
-    current_page = serializers.IntegerField(read_only=True)
+    current_location = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Book
         fields = [
             'id', 'title', 'start_location', 'end_location',
-            'start_date', 'current_page', 'finished',
+            'start_date', 'current_location', 'finished',
         ]
 
 
 class ReadingUpdateSerializer(serializers.ModelSerializer):
-    current_page = serializers.IntegerField()
+    current_location = serializers.IntegerField()
 
     class Meta:
         model = ReadingUpdate
-        fields = ['id', 'book', 'date', 'progress', 'current_page']
+        fields = ['id', 'book', 'date', 'progress', 'current_location']
         read_only_fields = ['progress']
 
     def create(self, validated_data):
-        current_page = validated_data.pop('current_page')
+        current_location = validated_data.pop('current_location')
         reading_update = ReadingUpdate.objects.create(**validated_data)
-        if current_page:
-            reading_update.progress_from_page(current_page)
+        if current_location:
+            reading_update.progress_from_page(current_location)
         return reading_update
 
     def update(self, instance, validated_data):
-        current_page = validated_data.pop('current_page', None)
+        current_location = validated_data.pop('current_location', None)
         super().update(instance, validated_data)
-        if current_page:
-            instance.progress_from_page(current_page)
+        if current_location:
+            instance.progress_from_page(current_location)
         return instance
