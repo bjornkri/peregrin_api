@@ -12,6 +12,7 @@ pytest-django = "*"
 pytest-coverage = "*"
 pytest-flake8 = "*"
 django-filter = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 django-extensions = "*"
