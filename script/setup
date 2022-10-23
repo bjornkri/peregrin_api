@@ -40,7 +40,9 @@ pipenv run python ./peregrin/manage.py migrate
 
 if $fromprod; then
 	echo "==> Pulling from prod..."
-	echo "🚨 Not implemented! 🚨"
+	heroku run python -W ignore manage.py dumpdata books history --natural-foreign --natural-primary -a peregrin -- > tmpdump.json
+	pipenv run python peregrin/manage.py import_legacy_json tmpdump.json
+	rm tmpdump.json
 fi;
 
 
