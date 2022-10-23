@@ -68,3 +68,26 @@ def test_update_later_progress_from_location():
     update_1.progress_from_location(20)
     update_2.refresh_from_db()
     assert update_2.progress == 30
+
+
+@pytest.mark.django_db
+def test_last_reading_update_with_no_updates():
+    current_date = date(2022, 1, 1)
+    book = BookFactory(start_date=current_date)
+    assert book.last_reading_update == current_date
+
+
+@pytest.mark.django_db
+def test_last_reading_update_with_one_update():
+    current_date = date(2022, 1, 1)
+    update = ReadingUpdateFactory(date=current_date)
+    assert update.book.last_reading_update == current_date
+
+
+@pytest.mark.django_db
+def test_last_reading_update_with_out_of_order_updates():
+    current_date = date(2022, 1, 3)
+    update = ReadingUpdateFactory(date=current_date)
+    ReadingUpdateFactory(date=date(2022, 1, 1), book=update.book)
+    ReadingUpdateFactory(date=date(2022, 1, 2), book=update.book)
+    assert update.book.last_reading_update == current_date

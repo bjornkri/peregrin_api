@@ -14,11 +14,17 @@ class Book(models.Model):
 
     @property
     def current_location(self):
-        updates = self.readingupdate_set.all().aggregate(
-            models.Sum('progress')
-        )
-        progress_sum = updates['progress__sum'] or 0
-        return self.start_location + progress_sum
+        update = self.readingupdate_set.last()
+        if update:
+            return update.current_location
+        return self.start_location
+
+    @property
+    def last_reading_update(self):
+        update = self.readingupdate_set.last()
+        if update:
+            return update.date
+        return self.start_date
 
 
 class ReadingUpdate(models.Model):
@@ -31,6 +37,7 @@ class ReadingUpdate(models.Model):
 
     class Meta:
         unique_together = ['book', 'date']
+        ordering = ['date', 'book']
 
     @property
     def current_location(self):
