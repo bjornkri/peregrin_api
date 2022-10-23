@@ -51,20 +51,20 @@ def test_current_location_for_reading_update():
 
 
 @pytest.mark.django_db
-def test_update_progress_from_page():
+def test_update_progress_from_location():
     book = BookFactory(start_date=date(2022, 1, 1))
     update = ReadingUpdateFactory(book=book, date=date(2022, 1, 1))
-    update.progress_from_page(20)
+    update.progress_from_location(20)
     assert update.progress == 19
 
 
 @pytest.mark.django_db
-def test_update_later_progress_from_page():
+def test_update_later_progress_from_location():
     book = BookFactory(start_date=date(2022, 1, 1))
     update_1 = ReadingUpdateFactory(book=book, date=date(2022, 1, 1))
     update_2 = ReadingUpdateFactory(book=book, date=date(2022, 1, 2))
-    update_2.progress_from_page(50)
+    update_2.progress_from_location(50)
     assert update_2.progress == 49
-    update_1.progress_from_page(20)
+    update_1.progress_from_location(20)
     update_2.refresh_from_db()
     assert update_2.progress == 30

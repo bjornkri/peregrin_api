@@ -42,7 +42,7 @@ class ReadingUpdate(models.Model):
         progress_sum = updates['progress__sum'] or 0
         return self.book.start_location + progress_sum
 
-    def progress_from_page(self, current_location):
+    def progress_from_location(self, current_location):
         prev_prog = self.progress
         try:
             prev_update = self.get_previous_by_date(book=self.book)

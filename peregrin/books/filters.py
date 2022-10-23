@@ -7,6 +7,7 @@ class BookFilter(filters.FilterSet):
         field_name='title', lookup_expr='icontains'
     )
     start_date = filters.DateFromToRangeFilter(field_name='start_date')
+    finished = filters.BooleanFilter(field_name='finished')
 
 
 class ReadingUpdateFilter(filters.FilterSet):
