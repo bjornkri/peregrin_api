@@ -22,9 +22,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
-      uses: VaultVulp/action-pipenv@v2.0.1
-      with:
-        command: install -d # Install all dependencies, including development ones
+      run: |
+        pip install pipenv
+        pipenv install -d
     - name: Run Tests
       run: |
         script/test
