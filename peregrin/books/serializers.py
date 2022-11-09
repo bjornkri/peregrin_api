@@ -3,19 +3,17 @@ from books.models import Book, ReadingUpdate
 
 
 class BookSerializer(serializers.ModelSerializer):
-    current_location = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Book
         fields = [
-            'id', 'title', 'start_location', 'end_location',
-            'start_date', 'last_reading_update', 'current_location',
-            'finished',
+            'id', 'title', 'type', 'start_location', 'end_location',
+            'start_date', 'finished',
         ]
 
 
 class ReadingUpdateSerializer(serializers.ModelSerializer):
-    current_location = serializers.IntegerField()
+    current_location = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = ReadingUpdate
