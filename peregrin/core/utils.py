@@ -11,7 +11,8 @@ def import_legacy(js):
                 end_location=record['fields']['total'],
                 start_location=record['fields']['start_location'],
                 start_date=record['fields']['start_date'],
-                finished=record['fields']['finished']
+                finished=record['fields']['finished'],
+                type=record['fields']['location_type']
             )
         elif record['model'] == 'history.locationupdate':
             update = ReadingUpdateSerializer(data={

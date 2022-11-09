@@ -3,11 +3,19 @@ from django.db import models
 
 
 class Book(models.Model):
+    KINDLE, PAGES = range(2)
+    BOOK_TYPE_CHOICES = (
+        (KINDLE, 'Kindle Locations'),
+        (PAGES, 'Pages')
+    )
     title = models.CharField(max_length=255)
     start_location = models.IntegerField(default=1)
     end_location = models.IntegerField()
     start_date = models.DateField(default=date.today)
     finished = models.BooleanField(default=False)
+    type = models.PositiveSmallIntegerField(
+        choices=BOOK_TYPE_CHOICES, default=PAGES
+    )
 
     def __str__(self):
         return self.title
