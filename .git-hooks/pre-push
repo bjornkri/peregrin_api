@@ -17,4 +17,4 @@ require_clean_work_tree push "==> 🚨🚨🚨 Commit or stash your stuff and tr
 echo "==> ✨Working tree is clean✨"
 
 # Run tests and fail early.
-./scripts/test -x
+./script/test -x
