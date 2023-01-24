@@ -25,30 +25,35 @@ def test_reading_update_create_with_current_location():
         start_date=date(2022, 1, 1)
     )
     request = factory.post(reverse('readingupdate-list'), {
-        "book": book.pk, "current_location": 20, "date": date(2022, 1, 1)
+        "book": book.pk, "location": 20, "date": date(2022, 1, 1)
     })
     view = ReadingUpdateViewSet.as_view({'post': 'create'})
     response = view(request)
-    assert response.data['progress'] == 19
+    assert response.data['location'] == 20
 
 
 @pytest.mark.django_db
-def test_reading_update_update_with_current_location():
+def test_reading_update_update():
     book = BookFactory(
         title='First book',
         start_date=date(2022, 1, 1)
     )
     update = ReadingUpdateFactory(
-        book=book, progress=100,
+        book=book,
+        location=20,
         date=date(2022, 1, 1)
     )
-    request = factory.put(
-        reverse('readingupdate-detail', kwargs={'pk': update.id}), {
-            "current_location": 20,
+    request = factory.post(
+        reverse('readingupdate-list'),
+        {
             "book": book.pk,
-        }
+            "location": 50,
+            "date": date(2022, 1, 1)
+        },
+        format='json'
     )
-    view = ReadingUpdateViewSet.as_view({'put': 'update'})
+    view = ReadingUpdateViewSet.as_view({'post': 'create'})
     response = view(request, pk=update.pk)
-    print(response.data)
-    assert response.data['progress'] == 19
+    assert response.data['location'] == 50
+
+    assert book.current_location == 50

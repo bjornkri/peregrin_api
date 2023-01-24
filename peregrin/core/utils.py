@@ -1,5 +1,5 @@
 
-from books.serializers import Book, ReadingUpdateSerializer
+from books.models import Book, ReadingUpdate
 
 
 def import_legacy(js):
@@ -15,11 +15,9 @@ def import_legacy(js):
                 type=record['fields']['location_type']
             )
         elif record['model'] == 'history.locationupdate':
-            update = ReadingUpdateSerializer(data={
-                    "book": record['fields']['book'],
-                    "current_location": record['fields']['location'],
-                    "date": record['fields']['date']
-                }
+            ReadingUpdate.objects.create(
+                id=record['pk'],
+                book_id=record['fields']['book'],
+                location=record['fields']['location'],
+                date=record['fields']['date']
             )
-            if update.is_valid():
-                update.save()

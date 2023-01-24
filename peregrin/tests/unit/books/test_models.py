@@ -16,7 +16,7 @@ def test_reading_update_string():
     title = 'Wuthering Heights'
     update = ReadingUpdateFactory(
         date=update_date,
-        progress=10,
+        location=10,
         book__title=title,
         book__start_date=update_date
     )
@@ -32,42 +32,9 @@ def test_current_location_for_new_book():
 @pytest.mark.django_db
 def test_current_location_for_book_with_updates():
     book = BookFactory(start_date=date(2022, 1, 1))
-    ReadingUpdateFactory(book=book, progress=19, date=date(2022, 1, 1))
-    ReadingUpdateFactory(book=book, progress=30, date=date(2022, 1, 2))
+    ReadingUpdateFactory(book=book, location=20, date=date(2022, 1, 1))
+    ReadingUpdateFactory(book=book, location=50, date=date(2022, 1, 2))
     assert book.current_location == 50
-
-
-@pytest.mark.django_db
-def test_current_location_for_reading_update():
-    book = BookFactory(start_date=date(2022, 1, 1))
-    update_1 = ReadingUpdateFactory(
-        book=book, progress=19, date=date(2022, 1, 1)
-    )
-    update_2 = ReadingUpdateFactory(
-        book=book, progress=30, date=date(2022, 1, 2)
-    )
-    assert update_1.current_location == 20
-    assert update_2.current_location == 50
-
-
-@pytest.mark.django_db
-def test_update_progress_from_location():
-    book = BookFactory(start_date=date(2022, 1, 1))
-    update = ReadingUpdateFactory(book=book, date=date(2022, 1, 1))
-    update.progress_from_location(20)
-    assert update.progress == 19
-
-
-@pytest.mark.django_db
-def test_update_later_progress_from_location():
-    book = BookFactory(start_date=date(2022, 1, 1))
-    update_1 = ReadingUpdateFactory(book=book, date=date(2022, 1, 1))
-    update_2 = ReadingUpdateFactory(book=book, date=date(2022, 1, 2))
-    update_2.progress_from_location(50)
-    assert update_2.progress == 49
-    update_1.progress_from_location(20)
-    update_2.refresh_from_db()
-    assert update_2.progress == 30
 
 
 @pytest.mark.django_db
@@ -91,3 +58,24 @@ def test_last_reading_update_with_out_of_order_updates():
     ReadingUpdateFactory(date=date(2022, 1, 1), book=update.book)
     ReadingUpdateFactory(date=date(2022, 1, 2), book=update.book)
     assert update.book.last_reading_update == current_date
+
+
+@pytest.mark.django_db
+def test_progress_calculation():
+    book = BookFactory(
+        start_location=1,
+        end_location=100,
+        start_date=date(2022, 1, 1)
+    )
+    ru1 = ReadingUpdateFactory(
+        book=book,
+        location=20,
+        date=date(2022, 1, 1)
+    )
+    ru2 = ReadingUpdateFactory(
+        book=book,
+        location=50,
+        date=date(2022, 1, 2)
+    )
+    assert ru1.progress == 19
+    assert ru2.progress == 30

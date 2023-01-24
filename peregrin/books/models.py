@@ -24,7 +24,7 @@ class Book(models.Model):
     def current_location(self):
         update = self.readingupdate_set.last()
         if update:
-            return update.current_location
+            return update.location
         return self.start_location
 
     @property
@@ -38,34 +38,20 @@ class Book(models.Model):
 class ReadingUpdate(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     date = models.DateField(default=date.today)
-    progress = models.IntegerField(default=0)
+    location = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.date} {self.book.title} ({self.progress})"
+        return f"{self.date} {self.book.title} ({self.location})"
 
     class Meta:
         unique_together = ['book', 'date']
         ordering = ['date', 'book']
 
     @property
-    def current_location(self):
-        updates = self.book.readingupdate_set.filter(
-            date__lte=self.date
-        ).aggregate(
-            models.Sum('progress')
-        )
-        progress_sum = updates['progress__sum'] or 0
-        return self.book.start_location + progress_sum
-
-    def progress_from_location(self, current_location):
-        prev_prog = self.progress
+    def progress(self):
         try:
             prev_update = self.get_previous_by_date(book=self.book)
-            progress = current_location - prev_update.current_location
+            return self.location - prev_update.location
         except ReadingUpdate.DoesNotExist:
-            progress = current_location - self.book.start_location
-        self.progress = progress
-        self.save()
-        for update in self.book.readingupdate_set.filter(date__gt=self.date):
-            update.progress -= progress - prev_prog
-            update.save()
+            return self.location - self.book.start_location
+        return 0
