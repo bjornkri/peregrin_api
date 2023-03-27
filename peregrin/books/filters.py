@@ -8,6 +8,11 @@ class BookFilter(filters.FilterSet):
     )
     start_date = filters.DateFromToRangeFilter(field_name='start_date')
     finished = filters.BooleanFilter(field_name='finished')
+    update_date = filters.DateFromToRangeFilter(
+        field_name='readingupdate__date',
+        label='Reading update date',
+        distinct=True,
+    )
 
 
 class ReadingUpdateFilter(filters.FilterSet):
