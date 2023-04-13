@@ -14,10 +14,10 @@ pytest-flake8 = "*"
 django-filter = "*"
 django-cors-headers = "*"
 django-environ = "*"
+django-extensions = "*"
 psycopg2 = "*"
 
 [dev-packages]
-django-extensions = "*"
 ipython = "*"
 
 [requires]
