@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'peregrin.wsgi.application'
 DATABASES = {
     'default': env.db(
         'DATABASE_URL',
-        default='postgres:///peregrin_two'),
+        default='sqlite:///db.sqlite3'),
 }
 
 # Password validation
