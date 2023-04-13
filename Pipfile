@@ -17,6 +17,7 @@ django-environ = "*"
 django-extensions = "*"
 psycopg2 = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 ipython = "*"
