@@ -28,3 +28,5 @@ jobs:
     - name: Run Tests
       run: |
         script/test
+      env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
