@@ -16,6 +16,7 @@ django-cors-headers = "*"
 django-environ = "*"
 django-extensions = "*"
 psycopg2 = "*"
+gunicorn = "*"
 
 [dev-packages]
 ipython = "*"
