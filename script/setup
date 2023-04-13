@@ -31,6 +31,12 @@ fi
 
 if [ -f ./peregrin/db.sqlite3 ]; then
     rm ./peregrin/db.sqlite3
+else
+    echo "==> Removing peregrin_two DB if existing"
+    dropdb peregrin_two --if-exists
+
+    echo "==> Re-create peregrin_two DB"
+	createdb peregrin_two
 fi
 
 cd "$(dirname "$0")/.."
