@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "localhost:8000",
     "localhost:5173",
+    "peregrin-api.herokuapp.com",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
