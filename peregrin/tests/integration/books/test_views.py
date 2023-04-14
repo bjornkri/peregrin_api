@@ -1,9 +1,12 @@
 import pytest
 from django.urls import reverse
 from datetime import date
-from rest_framework.test import APIRequestFactory
+from rest_framework.test import (
+    APIRequestFactory, force_authenticate,
+)
 from books.views import BookViewSet, ReadingUpdateViewSet
 from tests.factories.books import BookFactory, ReadingUpdateFactory
+from tests.factories.accounts import UserFactory
 
 factory = APIRequestFactory()
 
@@ -24,9 +27,11 @@ def test_reading_update_create_with_current_location():
         title='First book',
         start_date=date(2022, 1, 1)
     )
+    user = UserFactory()
     request = factory.post(reverse('readingupdate-list'), {
         "book": book.pk, "location": 20, "date": date(2022, 1, 1)
     })
+    force_authenticate(request, user=user)
     view = ReadingUpdateViewSet.as_view({'post': 'create'})
     response = view(request)
     assert response.data['location'] == 20
@@ -43,6 +48,7 @@ def test_reading_update_update():
         location=20,
         date=date(2022, 1, 1)
     )
+    user = UserFactory()
     request = factory.post(
         reverse('readingupdate-list'),
         {
@@ -52,6 +58,7 @@ def test_reading_update_update():
         },
         format='json'
     )
+    force_authenticate(request, user=user)
     view = ReadingUpdateViewSet.as_view({'post': 'create'})
     response = view(request, pk=update.pk)
     assert response.data['location'] == 50
