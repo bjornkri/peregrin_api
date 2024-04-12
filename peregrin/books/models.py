@@ -1,12 +1,18 @@
 from datetime import date
 from django.db import models
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 class Book(models.Model):
     KINDLE, PAGES = range(2)
     BOOK_TYPE_CHOICES = (
         (KINDLE, 'Kindle Locations'),
         (PAGES, 'Pages')
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True
     )
     title = models.CharField(max_length=255)
     start_location = models.IntegerField(default=1)

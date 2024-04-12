@@ -1,8 +1,21 @@
-
+import os
 from books.models import Book, ReadingUpdate
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 def import_legacy(js):
+    # Get or create the user from DEFAULT_USERNAME in env
+    username = os.environ.get('DEFAULT_USER_USERNAME', None)
+    user = None
+    if username:
+        user, created = User.objects.get_or_create(
+            username=username,
+        )
+        if created:
+            user.set_password(os.environ.get('DEFAULT_USER_PASSWORD'))
+            user.save()
     for record in js:
         if record['model'] == "books.book":
             Book.objects.create(
@@ -13,7 +26,8 @@ def import_legacy(js):
                 start_date=record['fields']['start_date'],
                 target_date=record['fields']['target_date'],
                 finished=record['fields']['finished'],
-                type=record['fields']['location_type']
+                type=record['fields']['location_type'],
+                user=user
             )
         elif record['model'] == 'history.locationupdate':
             ReadingUpdate.objects.create(
