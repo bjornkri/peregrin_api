@@ -8,7 +8,7 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = [
             'id', 'title', 'type', 'start_location', 'end_location',
-            'start_date', 'finished',
+            'start_date', 'target_date', 'finished',
         ]
 
 

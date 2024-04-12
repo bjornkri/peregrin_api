@@ -12,6 +12,7 @@ class Book(models.Model):
     start_location = models.IntegerField(default=1)
     end_location = models.IntegerField()
     start_date = models.DateField(default=date.today)
+    target_date = models.DateField(blank=True, null=True)
     finished = models.BooleanField(default=False)
     type = models.PositiveSmallIntegerField(
         choices=BOOK_TYPE_CHOICES, default=PAGES
